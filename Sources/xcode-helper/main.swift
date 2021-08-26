@@ -1,27 +1,11 @@
 import Foundation
 import ArgumentParser
+import Commands
 
 struct Constant {
   struct App {
     static let version = "0.0.1"
   }
-}
-
-@discardableResult
-func shell(_ command: String) -> String {
-  let task = Process()
-  let pipe = Pipe()
-  
-  task.standardOutput = pipe
-  task.standardError = pipe
-  task.arguments = ["-c", command]
-  task.launchPath = "/bin/bash"
-  task.launch()
-  
-  let data = pipe.fileHandleForReading.readDataToEndOfFile()
-  let output = String(data: data, encoding: .utf8)!
-  
-  return output
 }
 
 struct Print {
@@ -64,6 +48,14 @@ extension XcodeHelper {
 }
 
 fileprivate extension XcodeHelper.CacheFolder {
+  var absolutePaths: [String] {
+    return paths.map{
+      $0.starts(with: "~/") ?
+        "\(Commands.ENV.global["HOME"]!)/\(String(Array($0)["~/".count..<$0.count]))" :
+        $0
+    }
+  }
+  
   var paths: [String] {
     switch self {
     case .archives:
@@ -146,10 +138,10 @@ extension XcodeHelper.Cache {
     private func handleList(_ folders: [XcodeHelper.CacheFolder]) {
       for folder in folders {
         Print.h3(folder.rawValue)
-        for path in folder.paths {
+        for path in folder.absolutePaths {
           let cmd = "du -hs \(path)"
           Print.h6(verbose, cmd)
-          let output =  shell(cmd)
+          let output = Commands.Task.run("\(cmd)").output
           print(output)
         }
       }

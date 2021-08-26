@@ -7,12 +7,24 @@ let package = Package(
   name: "xcode-helper",
   dependencies: [
     .package(url: "https://github.com/apple/swift-argument-parser", from: "0.4.0"),
+    .package(url: "https://github.com/qiuzhifei/swift-commands", from: "0.5.0"),
   ],
   targets: [
     .target(
+      name: "Examples",
+      dependencies: [
+        "xcode-helper",
+        .product(name: "Commands",
+                 package: "swift-commands")
+      ],
+      path: "Examples/"),
+    .target(
       name: "xcode-helper",
       dependencies: [
-        .product(name: "ArgumentParser", package: "swift-argument-parser"),
+        .product(name: "ArgumentParser",
+                 package: "swift-argument-parser"),
+        .product(name: "Commands",
+                 package: "swift-commands"),
       ]),
     .testTarget(
       name: "xcode-helperTests",

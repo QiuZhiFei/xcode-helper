@@ -17,7 +17,11 @@ let package = Package(
   targets: [
     .target(
       name: "Examples",
-      dependencies: ["xcode-helper"],
+      dependencies: [
+        "xcode-helper",
+        .product(name: "Commands",
+                 package: "swift-commands")
+      ],
       path: "Examples/"),
     .target(
       name: "xcode-helper",

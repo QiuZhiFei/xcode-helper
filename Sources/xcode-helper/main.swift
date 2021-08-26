@@ -133,7 +133,8 @@ extension XcodeHelper.Cache {
         for path in folder.paths {
           let cmd = "du -hs \(path)"
           Print.h6(verbose, cmd)
-          Commands.Task.system("\(cmd)")
+          let output = Commands.Task.run("\(cmd)").output
+          print(output)
         }
       }
     }

@@ -6,9 +6,16 @@
 //
 
 import Foundation
-import xcode_helper
-//import xcode-helper
+import Commands
 
-//debugPrint("12333")
+//Bundle(for: type(of: self)).bundleURL
 
-XcodeHelper
+//debugPrint(Bundle.main.bundleURL)
+
+//Commands.Task.system("xcode-helper --version")
+
+//Commands.Task.system("ls")
+
+var request: Commands.Request = "\(Bundle.main.bundlePath)/xcode-helper --version"
+Commands.Task.system(request)
+debugPrint("ls")

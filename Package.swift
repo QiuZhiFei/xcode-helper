@@ -16,6 +16,10 @@ let package = Package(
   ],
   targets: [
     .target(
+      name: "Examples",
+      dependencies: ["xcode-helper"],
+      path: "Examples/"),
+    .target(
       name: "xcode-helper",
       dependencies: [
         .product(name: "ArgumentParser",

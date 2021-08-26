@@ -1,27 +1,11 @@
 import Foundation
 import ArgumentParser
+import Commands
 
 struct Constant {
   struct App {
     static let version = "0.0.1"
   }
-}
-
-@discardableResult
-func shell(_ command: String) -> String {
-  let task = Process()
-  let pipe = Pipe()
-  
-  task.standardOutput = pipe
-  task.standardError = pipe
-  task.arguments = ["-c", command]
-  task.launchPath = "/bin/bash"
-  task.launch()
-  
-  let data = pipe.fileHandleForReading.readDataToEndOfFile()
-  let output = String(data: data, encoding: .utf8)!
-  
-  return output
 }
 
 struct Print {
@@ -149,8 +133,7 @@ extension XcodeHelper.Cache {
         for path in folder.paths {
           let cmd = "du -hs \(path)"
           Print.h6(verbose, cmd)
-          let output =  shell(cmd)
-          print(output)
+          Commands.Task.system("\(cmd)")
         }
       }
     }

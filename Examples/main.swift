@@ -8,14 +8,14 @@
 import Foundation
 import Commands
 
-//Bundle(for: type(of: self)).bundleURL
+Commands.ENV.global.add(PATH: Bundle.main.bundlePath)
 
-//debugPrint(Bundle.main.bundleURL)
+Commands.Task.system("xcode-helper")
 
-//Commands.Task.system("xcode-helper --version")
+Commands.Task.system("xcode-helper --version")
 
-//Commands.Task.system("ls")
+Commands.Task.system(
+  Commands.Request(executableURL: "xcode-helper",
+                   arguments: ["cache", "list"])
+)
 
-var request: Commands.Request = "\(Bundle.main.bundlePath)/xcode-helper --version"
-Commands.Task.system(request)
-debugPrint("ls")
